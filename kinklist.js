@@ -33,10 +33,16 @@ var kinks = {};
 var inputKinks = {}
 var colors = {}
 var level = {};
+let kinkSizes = {
+    "209": "classic",
+    "285": "detailed",
+    "589": "plsno",
+    "437": "LDR",
+};
 
 function LoadList() {
     fileToRead = $("#listType").val() + '.txt';
-    $.get(fileToRead, function(data) {
+    return $.get(fileToRead, function(data) {
         $('#Kinks').text(data);
         var selection = inputKinks.saveSelection();
         var kinksText = $('#Kinks').val();
@@ -52,9 +58,7 @@ $(function(){
     // Force loading the default item
     LoadList();
 
-    $("#listType").change(function() {
-        LoadList();
-    }); 
+    $("#listType").change(LoadList);
     
     inputKinks = {
         $columns: [],
@@ -531,17 +535,30 @@ $(function(){
             });
             return inputKinks.encode(Object.keys(colors).length, hashValues);
         },
+        applySaveToList: function (values) {
+            let valueIndex = 0;
+            $('#InputList .choices').each(function(){
+                let value = values[valueIndex++];
+                $(this).children().eq(value).addClass('selected');
+            });
+        },
         parseHash: function(){
-            var hash = location.hash.substring(1);
+            let hash = location.hash.substring(1);
             if(hash.length < 10) return;
 
-            var values = inputKinks.decode(Object.keys(colors).length, hash);
-            var valueIndex = 0;
-            $('#InputList .choices').each(function(){
-                var $this = $(this);
-                var value = values[valueIndex++];
-                $this.children().eq(value).addClass('selected');
-            });
+            let values = inputKinks.decode(Object.keys(colors).length, hash);
+            // select correct kink list
+            const kinkListHashOption = kinkSizes[values.length.toString()]
+            if (kinkListHashOption === undefined) {
+                this.applySaveToList(values);
+                return
+            }
+            let $listType = $('#listType');
+            // This does not trigger the onChange event on #listType, doing it manually
+            $listType.val(kinkListHashOption);
+            LoadList().then(function() {
+                inputKinks.applySaveToList(values);
+            })
         },
         saveSelection: function(){
             var selection = [];
