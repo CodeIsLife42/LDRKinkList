@@ -600,7 +600,7 @@ $(function(){
                     var selector = selection[i];
                     $(selector).addClass('selected');
                 }
-                location.hash = inputKinks.updateHash();
+                //location.hash = inputKinks.updateHash(); // 20250113
             }, 300);
         },
         parseKinksText: function(kinksText){
