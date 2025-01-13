@@ -64,7 +64,7 @@
 * Weekly or less frequent
 * Excused with notice
 ? Required communication may be paused with notice if the person is going to be unavailable
-* 72-hour termination
+* 72-hour termination rule
 ? Relationship is assumed terminated if no message is received for 72 hours
 
 #Communication Pace
