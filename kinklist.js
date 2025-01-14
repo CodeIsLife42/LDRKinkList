@@ -591,7 +591,7 @@ $(function(){
                 isHashUpdating = false;
                 return;
             }
-            
+
             let $listType = $('#listType');
             // This does not trigger the onChange event on #listType, doing it manually
             $listType.val(kinkListHashOption);
@@ -643,7 +643,7 @@ $(function(){
                     $(selector).addClass('selected');
                 }
                 allowHashUpdate = true;
-                //location.hash = inputKinks.updateHash(); // Disabled 20250113 to prevent overwriting the hash
+                location.hash = inputKinks.updateHash();
             }, 300);
         },
         parseKinksText: function(kinksText){
