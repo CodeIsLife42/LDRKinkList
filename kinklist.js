@@ -643,7 +643,7 @@ $(function(){
                     $(selector).addClass('selected');
                 }
                 allowHashUpdate = true;
-                //location.hash = inputKinks.updateHash(); // Removed 20250113
+                location.hash = inputKinks.updateHash();
             }, 300);
         },
         parseKinksText: function(kinksText){
