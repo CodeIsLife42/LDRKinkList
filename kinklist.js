@@ -37,7 +37,7 @@ let kinkSizes = {
     "209": "classic",
     "285": "detailed",
     "589": "plsno",
-    "500": "LDR",
+    "436": "LDR",
 };
 
 var allowHashUpdate = true;
