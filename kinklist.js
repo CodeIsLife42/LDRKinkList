@@ -41,7 +41,7 @@ let kinkSizes = {
 };
 
 var allowHashUpdate = true;
-var isUpdatingHash = false;
+var isHashUpdating = false;
 
 function LoadList() {
     fileToRead = $("#listType").val() + '.txt';
