@@ -40,6 +40,9 @@ let kinkSizes = {
     "437": "LDR",
 };
 
+var allowHashUpdate = true;
+var isUpdatingHash = false;
+
 function LoadList() {
     fileToRead = $("#listType").val() + '.txt';
     return $.get(fileToRead, function(data) {
@@ -50,6 +53,29 @@ function LoadList() {
         inputKinks.fillInputList();
     }, 'text');
 }
+
+// Debounce function
+function debounce(func, wait, immediate) {
+    let timeout;
+    return function() {
+        const context = this,
+              args = arguments;
+        const later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
+
+// Debounced version of updateHash with a 300ms delay
+const debouncedUpdateHash = debounce(function() {
+    location.hash = inputKinks.updateHash();
+}, 300);
+
 
 $(function(){
 
@@ -168,9 +194,12 @@ $(function(){
             }
             inputKinks.placeCategories($categories);
 
-            // Make things update hash
+            // Make things update hash (event binding)
             $('#InputList').find('button.choice').on('click', function(){
-                location.hash = inputKinks.updateHash();
+                if (allowHashUpdate) {
+                    //location.hash = inputKinks.updateHash();
+                    debouncedUpdateHash();
+                }
             });
         },
         init: function(){
@@ -535,6 +564,7 @@ $(function(){
             });
             return inputKinks.encode(Object.keys(colors).length, hashValues);
         },
+
         applySaveToList: function (values) {
             let valueIndex = 0;
             $('#InputList .choices').each(function(){
@@ -543,22 +573,33 @@ $(function(){
             });
         },
         parseHash: function(){
+            if (isHashUpdating) return; // Prevent re-entrant calls
+            isHashUpdating = true;
+        
             let hash = location.hash.substring(1);
-            if(hash.length < 10) return;
-
+            if(hash.length < 10) {
+                isHashUpdating = false;
+                return;
+            }
+        
             let values = inputKinks.decode(Object.keys(colors).length, hash);
+
             // select correct kink list
             const kinkListHashOption = kinkSizes[values.length.toString()]
             if (kinkListHashOption === undefined) {
                 this.applySaveToList(values);
-                return
+                isHashUpdating = false;
+                return;
             }
+            
             let $listType = $('#listType');
             // This does not trigger the onChange event on #listType, doing it manually
             $listType.val(kinkListHashOption);
             LoadList().then(function() {
                 inputKinks.applySaveToList(values);
-            })
+                isHashUpdating = false;
+            });
+            sHashUpdating = false;
         },
         saveSelection: function(){
             var selection = [];
@@ -595,12 +636,14 @@ $(function(){
             return KinksText;
         },
         restoreSavedSelection: function(selection){
+            allowHashUpdate = false;
             setTimeout(function(){
                 for(var i = 0; i < selection.length; i++){
                     var selector = selection[i];
                     $(selector).addClass('selected');
                 }
-                //location.hash = inputKinks.updateHash(); // 20250113
+                allowHashUpdate = true;
+                //location.hash = inputKinks.updateHash(); // Disabled 20250113 to prevent overwriting the hash
             }, 300);
         },
         parseKinksText: function(kinksText){
