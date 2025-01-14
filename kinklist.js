@@ -37,7 +37,7 @@ let kinkSizes = {
     "209": "classic",
     "285": "detailed",
     "589": "plsno",
-    "436": "LDR",
+    "437": "LDR",
 };
 
 var allowHashUpdate = true;
@@ -583,9 +583,10 @@ $(function(){
             }
         
             let values = inputKinks.decode(Object.keys(colors).length, hash);
-
+            console.log()
             // select correct kink list
             const kinkListHashOption = kinkSizes[values.length.toString()]
+            console.log(`kinkListHashOption for values.length (${values.length}):`, kinkListHashOption); // Logs the selected kink list option based on values length
             if (kinkListHashOption === undefined) {
                 this.applySaveToList(values);
                 isHashUpdating = false;
