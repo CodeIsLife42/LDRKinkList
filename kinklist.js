@@ -599,7 +599,7 @@ $(function(){
                 inputKinks.applySaveToList(values);
                 isHashUpdating = false;
             });
-            sHashUpdating = false;
+            isHashUpdating = false;
         },
         saveSelection: function(){
             var selection = [];
@@ -643,7 +643,7 @@ $(function(){
                     $(selector).addClass('selected');
                 }
                 allowHashUpdate = true;
-                location.hash = inputKinks.updateHash();
+                //location.hash = inputKinks.updateHash(); // Removed 20250113
             }, 300);
         },
         parseKinksText: function(kinksText){
