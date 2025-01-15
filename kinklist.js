@@ -230,7 +230,8 @@ $(function(){
 
             })();
         },
-        hashChars: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.=+*^!@",
+        //hashChars: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.=+*^!@",
+        hashChars: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~",
         maxPow: function(base, maxVal) {
             var maxPow = 1;
             for(var pow = 1; Math.pow(base, pow) <= maxVal; pow++){
