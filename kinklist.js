@@ -562,6 +562,8 @@ $(function(){
                 if(!lvlInt) lvlInt = 0;
                 hashValues.push(lvlInt);
             });
+            console.log("updateHash count:", hashValues.length); // Logs the number of hash values
+            console.log("object...", Object.keys(colors).length); // Logs the hash values object
             return inputKinks.encode(Object.keys(colors).length, hashValues);
         },
 
