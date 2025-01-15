@@ -583,7 +583,7 @@ $(function(){
             }
         
             let values = inputKinks.decode(Object.keys(colors).length, hash);
-            console.log()
+            console.log("Decoded Values:", values); // Logs the decoded values array
             // select correct kink list
             const kinkListHashOption = kinkSizes[values.length.toString()]
             console.log(`kinkListHashOption for values.length (${values.length}):`, kinkListHashOption); // Logs the selected kink list option based on values length
@@ -594,8 +594,12 @@ $(function(){
             }
 
             let $listType = $('#listType');
+            console.log("Selected List Type Before Setting:", $listType.val()); // Logs the current value before setting
+
             // This does not trigger the onChange event on #listType, doing it manually
             $listType.val(kinkListHashOption);
+            console.log("Selected List Type After Setting:", $listType.val()); // Logs the new value after setting
+
             LoadList().then(function() {
                 inputKinks.applySaveToList(values);
                 isHashUpdating = false;
